@@ -23,7 +23,7 @@ public class reactiveAI : MonoBehaviour
         waypointIndex++;
         if (waypointIndex == waypoints.Length)
         {
-            waypointIndex = 0;
+            waypointIndex = 0; 
         }
     }
 

@@ -81,5 +81,57 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5613259911404559895, guid: 7672540ad5a60c34e861e587fa6d2ea0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2669544055043303731}
+    - targetCorrespondingSourceObject: {fileID: 5613259911404559895, guid: 7672540ad5a60c34e861e587fa6d2ea0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2671428501602911135}
   m_SourcePrefab: {fileID: 100100000, guid: 7672540ad5a60c34e861e587fa6d2ea0, type: 3}
+--- !u!1 &6327374021167764191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5613259911404559895, guid: 7672540ad5a60c34e861e587fa6d2ea0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1885063224299670728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &2669544055043303731
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327374021167764191}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.1928093, y: 0.76972246, z: 1.4144892}
+  m_Center: {x: -0.0022919178, y: -0.00000023841858, z: 0.14736092}
+--- !u!114 &2671428501602911135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327374021167764191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a66c61ac9f54d9284bee6a4893c34d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectAudio: {fileID: 8300000, guid: f2125dc7c4ac05e468da700a513dabc8, type: 3}
+  myScore: 5
+  moveDistance: -0.7
+  backDistance: 0.7
+  moveDuration: 0.5

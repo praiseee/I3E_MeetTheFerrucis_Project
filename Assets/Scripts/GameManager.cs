@@ -7,7 +7,10 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
 
-	private int currentScore = 0;
+
+	private bool evidenceOneDone = false;
+	private bool evidenceTwoDone = false;
+	private bool evidenceThreeDone = false;
 
 	public TextMeshProUGUI scoreText;
 
@@ -24,11 +27,16 @@ public class GameManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-	public void IncreaseScore(int scoreToAdd)
+	public void EvidenceOneCheck()
     {
-        // Increase the score of the player by scoreToAdd
-        currentScore += scoreToAdd;
-		scoreText.text = "Score: " + currentScore.ToString();
+        evidenceOneDone = false;
+		Debug.Log("OneDone");
     } 
+
+	public void EvidenceTwoCheck()
+    {
+        evidenceTwoDone = false;
+		Debug.Log("TwoDone");
+    }
 
 }

@@ -32,7 +32,6 @@ public class Collectible : Interactable
         {
             opening = true;
             base.Interact(thePlayer);
-            GameManager.instance.IncreaseScore(myScore);
             AudioSource.PlayClipAtPoint(collectAudio, transform.position, 1f);
             Collected();
         }

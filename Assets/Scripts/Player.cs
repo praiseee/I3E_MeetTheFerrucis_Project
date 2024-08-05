@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI interactionText;
 
+    [SerializeField]
+    Dialogue dialogue;
+
     public void Update()
     {
         RaycastHit hitInfo;
@@ -51,5 +54,10 @@ public class Player : MonoBehaviour
         {           
             currentInteractable.Interact(this);
         }
+    }
+
+    void OnClick()
+    {
+        dialogue.SkipLine();
     }
 }

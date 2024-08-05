@@ -22,6 +22,8 @@ public class Door : Interactable
 
     public bool sceneChanger = false;
 
+    public int sceneToChange;
+
     /// <summary>
     /// Flags if the door is locked
     /// </summary>
@@ -74,7 +76,7 @@ public class Door : Interactable
 
         if (sceneChanger)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(sceneToChange);
         }
     }
 

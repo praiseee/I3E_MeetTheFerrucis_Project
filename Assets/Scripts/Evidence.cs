@@ -21,14 +21,15 @@ public class Evidence : Interactable
 
     float evidenceOne = 0;
     float evidenceTwo = 0;
-	
+    float evidenceThree = 0;
+
     public override void Interact(Player thePlayer)
     {
         if (!searching)
         {
             searching = true;
-            evidenceCam.gameObject.SetActive(true);
-            playerCam.gameObject.SetActive(false);
+            evidenceCam.SetActive(true);
+            playerCam.SetActive(false);
             StartCoroutine(ShowEvidenceButtonsWithDelay());
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -44,9 +45,9 @@ public class Evidence : Interactable
         else
         {
             searching = false;
-            playerCam.gameObject.SetActive(true);
-            evidenceCam.gameObject.SetActive(false);
-            evidenceButtons.gameObject.SetActive(false);
+            playerCam.SetActive(true);
+            evidenceCam.SetActive(false);
+            evidenceButtons.SetActive(false); // Hide buttons when quitting evidence interaction
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -63,14 +64,17 @@ public class Evidence : Interactable
         // Wait for 2 seconds
         yield return new WaitForSeconds(2.0f);
 
-        // Show the evidence buttons
-        evidenceButtons.gameObject.SetActive(true);
+        // Show the evidence buttons if still searching
+        if (searching)
+        {
+            evidenceButtons.SetActive(true);
+        }
     }
 
     public void EvidenceOne()
     {
-        evidenceOne = evidenceOne + 1;
-        if(evidenceOne == 3)
+        evidenceOne += 1;
+        if (evidenceOne == 3)
         {
             GameManager.instance.EvidenceOneCheck();
         }
@@ -78,10 +82,15 @@ public class Evidence : Interactable
 
     public void EvidenceTwo()
     {
-        evidenceTwo = evidenceTwo + 1;
-        if(evidenceTwo == 2)
+        evidenceTwo += 1;
+        if (evidenceTwo == 2)
         {
             GameManager.instance.EvidenceTwoCheck();
         }
+    }
+
+    public void EvidenceThree()
+    {
+        GameManager.instance.EvidenceThreeCheck();
     }
 }

@@ -29,14 +29,19 @@ public class GameManager : MonoBehaviour
 	}
 	public void EvidenceOneCheck()
     {
-        evidenceOneDone = false;
+        evidenceOneDone = true;
 		Debug.Log("OneDone");
     } 
 
 	public void EvidenceTwoCheck()
     {
-        evidenceTwoDone = false;
+        evidenceTwoDone = true;
 		Debug.Log("TwoDone");
     }
 
+	public void EvidenceThreeCheck()
+    {
+        evidenceThreeDone = true;
+		Debug.Log("ThreeDone");
+    }
 }

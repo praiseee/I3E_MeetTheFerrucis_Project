@@ -9,7 +9,7 @@ public class Dialogue : MonoBehaviour
     public string[] lines;
     public float textSpeed;
 
-    private bool textActive = false;
+
 
     private int index;
 
@@ -29,7 +29,6 @@ public class Dialogue : MonoBehaviour
     public void RunDialogue()
     {
         gameObject.SetActive(true);
-        textActive = true;
         StartDialogue();
     }
 
@@ -60,14 +59,12 @@ public class Dialogue : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
-            textActive = false;
+
         }
     }
 
     public void SkipLine()
     {
-        if(textActive)
-        {
             if (textComponent.text == lines[index])
             {
                 NextLine();
@@ -77,7 +74,6 @@ public class Dialogue : MonoBehaviour
                 StopAllCoroutines();
                 textComponent.text = lines[index];
             }
-        }
         
     }
 }

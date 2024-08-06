@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI interactionText;
 
-    [SerializeField]
     Dialogue dialogue;
 
     public void Update()
@@ -58,6 +57,14 @@ public class Player : MonoBehaviour
 
     void OnClick()
     {
-        dialogue.SkipLine();
+         if(dialogue != null)
+        {
+            dialogue.SkipLine();
+        }
+    }
+
+    public void SetDialogue(Dialogue NewDialogue)
+    {
+        dialogue = NewDialogue;
     }
 }

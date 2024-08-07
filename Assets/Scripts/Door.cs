@@ -24,6 +24,8 @@ public class Door : Interactable
     /// </summary>
     bool opened = false;
 
+    public bool outsideDoor = false;
+
     public bool sceneChanger = false;
 
     bool outsideDoorLocked = true;
@@ -65,13 +67,16 @@ public class Door : Interactable
     {
         // Door should open only when it is not locked
         // and not already opened.
-
-        if (outsideDoorLocked)
+        if (outsideDoor)
         {
-            outsideDoorDialogue.RunDialogue();
-            player.SetDialogue(outsideDoorDialogue);
-            return;
+            if (outsideDoorLocked)
+            {
+                outsideDoorDialogue.RunDialogue();
+                player.SetDialogue(outsideDoorDialogue);
+                return;
+            }
         }
+        
 
         if(!locked && !opened)
         {

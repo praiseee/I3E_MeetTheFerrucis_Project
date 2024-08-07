@@ -15,12 +15,18 @@ public class Door : Interactable
     [SerializeField]
     TextMeshProUGUI lockedDoorText;
 
+    public Dialogue outsideDoorDialogue;
+
+    public Player player;
+
     /// <summary>
     /// Flags if the door is open
     /// </summary>
     bool opened = false;
 
     public bool sceneChanger = false;
+
+    bool outsideDoorLocked = true;
 
     public int sceneToChange;
 
@@ -33,6 +39,11 @@ public class Door : Interactable
     /// Flags if the player is near
     /// </summary>
     bool playerNear = false;
+
+    public void UnlockOutsideDoor()
+    {
+        outsideDoorLocked = false;
+    }
 
     /// <summary>
     /// Handles the door's interaction
@@ -54,6 +65,14 @@ public class Door : Interactable
     {
         // Door should open only when it is not locked
         // and not already opened.
+
+        if (outsideDoorLocked)
+        {
+            outsideDoorDialogue.RunDialogue();
+            player.SetDialogue(outsideDoorDialogue);
+            return;
+        }
+
         if(!locked && !opened)
         {
             // Create a new Vector3 and store the current rotation.
@@ -78,6 +97,7 @@ public class Door : Interactable
         {
             SceneManager.LoadScene(sceneToChange);
         }
+
     }
 
 
@@ -87,6 +107,7 @@ public class Door : Interactable
     /// </summary>
     public void CloseDoor()
     {
+
         // Door should close only when it is not locked
         // and already opened.
         if(!locked && opened)
@@ -114,6 +135,8 @@ public class Door : Interactable
         // Assign the lockStatus value to the locked bool.
         locked = lockStatus;
     }
+
+    
 
     /// <summary>
     /// Sets the player near status and starts the coroutine to close the door.

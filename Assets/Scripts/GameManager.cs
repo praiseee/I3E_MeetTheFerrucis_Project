@@ -5,43 +5,58 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager instance;
+    public static GameManager instance;
 
+    int evidenceDone = 0;
 
-	private bool evidenceOneDone = false;
-	private bool evidenceTwoDone = false;
-	private bool evidenceThreeDone = false;
+    [SerializeField]
+    TextMeshProUGUI outsidePoliceObjective;
 
-	public TextMeshProUGUI scoreText;
+    [SerializeField]
+    TextMeshProUGUI evidenceObjective;
 
-	public void Awake()
+    [SerializeField]
+    private GameObject gateBorder;
 
-	{
-		if(instance == null)
-		{
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else if(instance != null && instance != this)
-		{
-			Destroy(gameObject);
-		}
-	}
-	public void EvidenceOneCheck()
+    public void Awake()
     {
-        evidenceOneDone = true;
-		Debug.Log("OneDone");
-    } 
-
-	public void EvidenceTwoCheck()
-    {
-        evidenceTwoDone = true;
-		Debug.Log("TwoDone");
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 
-	public void EvidenceThreeCheck()
+    public void EvidenceOneCheck()
     {
-        evidenceThreeDone = true;
-		Debug.Log("ThreeDone");
+        evidenceDone += 1;
+        evidenceObjective.text = "Investigate the Scene " + evidenceDone.ToString() + "/3";
+        Debug.Log("OneDone");
+    }
+
+    public void EvidenceTwoCheck()
+    {
+        evidenceDone += 1;
+        evidenceObjective.text = "Investigate the Scene " + evidenceDone.ToString() + "/3";
+        Debug.Log("TwoDone");
+    }
+
+    public void EvidenceThreeCheck()
+    {
+        evidenceDone += 1;
+        evidenceObjective.text = "Investigate the Scene " + evidenceDone.ToString() + "/3";
+        Debug.Log("ThreeDone");
+    }
+
+    public void OutsidePoliceDone()
+    {
+        gateBorder.SetActive(false);
+        outsidePoliceObjective.gameObject.SetActive(false);
+        evidenceObjective.gameObject.SetActive(true);
     }
 }
+

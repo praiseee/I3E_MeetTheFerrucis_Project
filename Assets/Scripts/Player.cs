@@ -16,16 +16,30 @@ public class Player : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI interactionText;
 
-    Dialogue dialogue;
+    [SerializeField]
+    TextMeshProUGUI exitText;
+
+    private Dialogue dialogue;
+
+    public Evidence evidence;
 
     public void Update()
     {
+        //Debug.Log(dialogue);
         RaycastHit hitInfo;
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hitInfo, interactionDistance))
         {
             if (hitInfo.transform.TryGetComponent<Interactable>(out currentInteractable))
             {
-                interactionText.gameObject.SetActive(true);
+                if(dialogue == null || !dialogue.textActive )
+                {
+                    if (evidence.searching)
+                    {
+                        return;
+                    }
+                    interactionText.gameObject.SetActive(true);
+                }
+                
             }
             else
             {
@@ -45,20 +59,27 @@ public class Player : MonoBehaviour
         currentInteractable = newInteractable;
     }
 
+    public void ResetDialogue()
+    {
+        dialogue = null;
+    }
+
     void OnInteract()
     {
+        interactionText.gameObject.SetActive(false);
         if (dialogue == null || !dialogue.textActive)
         {
             if (currentInteractable != null)
             {
                 currentInteractable.Interact(this);
-                dialogue = null;
             }
         }
     }
 
     void OnClick()
     {
+        //Debug.Log(dialogue);
+
         if (dialogue != null)
         {
             dialogue.SkipLine();
@@ -67,7 +88,26 @@ public class Player : MonoBehaviour
 
     public void SetDialogue(Dialogue newDialogue)
     {
+        //Debug.Log("set dialog");
+        //Debug.Log(newDialogue);
         dialogue = newDialogue;
+        Debug.Log(dialogue);
+        return;
+    }
+
+    public void ExitText()
+    {
+        if(evidence.searching)
+        {
+            interactionText.gameObject.SetActive(false);
+            exitText.gameObject.SetActive(true);
+
+        }
+        if(!evidence.searching)
+        {
+            interactionText.gameObject.SetActive(true);
+            exitText.gameObject.SetActive(false);
+        }
     }
 }
 

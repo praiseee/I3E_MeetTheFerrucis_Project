@@ -17,11 +17,19 @@ public class Evidence : Interactable
     [SerializeField]
     private GameObject evidenceButtons;
 
-    bool searching = false;
+    public Player player;
+
+    public Door linkedDoor;
+
+    public bool searching = false;
 
     float evidenceOne = 0;
     float evidenceTwo = 0;
     float evidenceThree = 0;
+
+    private bool evidenceOneDone = false;
+	private bool evidenceTwoDone = false;
+	private bool evidenceThreeDone = false;
 
     public override void Interact(Player thePlayer)
     {
@@ -41,6 +49,7 @@ public class Evidence : Interactable
             }
 
             base.Interact(thePlayer);
+            player.ExitText();
         }
         else
         {
@@ -56,6 +65,7 @@ public class Evidence : Interactable
             {
                 playerMovementScript.enabled = true;
             }
+            player.ExitText();
         }
     }
 
@@ -77,6 +87,9 @@ public class Evidence : Interactable
         if (evidenceOne == 3)
         {
             GameManager.instance.EvidenceOneCheck();
+            evidenceOneDone = true;
+		    Debug.Log("OneDone");
+            EvidenceDone();
         }
     }
 
@@ -86,11 +99,25 @@ public class Evidence : Interactable
         if (evidenceTwo == 2)
         {
             GameManager.instance.EvidenceTwoCheck();
+            evidenceTwoDone = true;
+		    Debug.Log("TwoDone");
+            EvidenceDone();
         }
     }
 
     public void EvidenceThree()
     {
         GameManager.instance.EvidenceThreeCheck();
+        evidenceThreeDone = true;
+		Debug.Log("ThreeDone");
+        EvidenceDone();
+    }
+
+    private void EvidenceDone()
+    {
+        if(evidenceOneDone && evidenceTwoDone && evidenceThreeDone)
+        {
+            linkedDoor.UnlockOutsideDoor();
+        }
     }
 }

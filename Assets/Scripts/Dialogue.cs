@@ -10,11 +10,16 @@ public class Dialogue : MonoBehaviour
     public float textSpeed;
 
     public bool textActive = false;
-
+    public bool evidence = false;
     private int index;
 
     [SerializeField]
     private GameObject buttonsHide;
+
+    [SerializeField]
+    private GameObject convoButtons;
+
+    public Player player;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +44,10 @@ public class Dialogue : MonoBehaviour
 
     public void RunDialogue()
     {
-        buttonsHide.gameObject.SetActive(false);
+        if(evidence)
+        {
+            buttonsHide.gameObject.SetActive(false);
+        }
         gameObject.SetActive(true);
         StartDialogue();
         textActive = true;
@@ -48,7 +56,13 @@ public class Dialogue : MonoBehaviour
 
     void StartDialogue()
     {
+        textComponent.text = string.Empty;
         index = 0;
+        if(!evidence)
+        {
+            convoButtons.gameObject.SetActive(false);
+        }
+        
         StartCoroutine(TypeLine());
     }
 
@@ -72,11 +86,28 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
-            textActive = false;
-            buttonsHide.gameObject.SetActive(true);
+            if(!evidence)
+            {
+                convoButtons.gameObject.SetActive(true);
+            }
+
+            
+            
+            if(evidence)
+            {
+                player.ResetDialogue();
+                gameObject.SetActive(false);
+                DialogueEnd();
+                buttonsHide.gameObject.SetActive(true);
+            }
+            
 
         }
+    }
+
+    public void DialogueEnd()
+    {
+        textActive = false;
     }
 
     public void SkipLine()

@@ -23,6 +23,16 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject inventory;
 
+    //Evidence Inventory
+    [SerializeField]
+    private GameObject evidenceInventory1;
+
+    [SerializeField]
+    private GameObject evidenceInventory2;
+
+    [SerializeField]
+    private GameObject evidenceInventory3;
+
     public void Awake()
     {
         if (instance == null)
@@ -40,6 +50,7 @@ public class GameManager : MonoBehaviour
     {
         evidenceDone += 1;
         evidenceObjective.text = "Investigate the Scene " + evidenceDone.ToString() + "/3";
+        evidenceInventory1.gameObject.SetActive(true);
         Debug.Log("OneDone");
     }
 
@@ -47,6 +58,7 @@ public class GameManager : MonoBehaviour
     {
         evidenceDone += 1;
         evidenceObjective.text = "Investigate the Scene " + evidenceDone.ToString() + "/3";
+        evidenceInventory2.gameObject.SetActive(true);
         Debug.Log("TwoDone");
     }
 
@@ -54,6 +66,7 @@ public class GameManager : MonoBehaviour
     {
         evidenceDone += 1;
         evidenceObjective.text = "Investigate the Scene " + evidenceDone.ToString() + "/3";
+        evidenceInventory3.gameObject.SetActive(true);
         Debug.Log("ThreeDone");
     }
 

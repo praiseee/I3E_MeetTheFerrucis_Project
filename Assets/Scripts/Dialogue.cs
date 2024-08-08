@@ -48,7 +48,11 @@ public class Dialogue : MonoBehaviour
         {
             buttonsHide.SetActive(false);
         }
-        convoButtons.SetActive(false);
+        if (!evidence)
+        {
+            convoButtons.SetActive(false);
+        }
+        
 
         StartCoroutine(DisplayFirstLineWithDelay());
     }

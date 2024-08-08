@@ -31,7 +31,6 @@ public class GrandfatherAI : MonoBehaviour
         moveButton.gameObject.SetActive(false); //Button is hidden at start
         animator.SetBool("isWalking", false); //Character is not walking at start
 
-        // Ensure button click is set up
         moveButton.onClick.AddListener(StartMoving);
     }
 

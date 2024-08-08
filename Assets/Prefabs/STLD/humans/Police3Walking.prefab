@@ -107,7 +107,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 787fde920ceae28499e09d05340dd7cc, type: 2}
+      objectReference: {fileID: 9100000, guid: b3a65bf37b5618845ab8fbdaad5d229c, type: 2}
     - target: {fileID: 6515712193588681746, guid: 574df90c42d9e064d96c178c79d7419d,
         type: 3}
       propertyPath: m_LocalRotation.x

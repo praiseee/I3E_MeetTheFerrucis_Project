@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     int evidenceDone = 0;
+
     private bool inventoryShown = false;
 
     [SerializeField]
@@ -68,11 +69,14 @@ public class GameManager : MonoBehaviour
         if(!inventoryShown)
         {
             inventory.gameObject.SetActive(true);
+            inventoryShown = true;
+            return;
         }
 
         if(inventoryShown)
         {
             inventory.gameObject.SetActive(false);
+            inventoryShown = false;
         }
         
     }

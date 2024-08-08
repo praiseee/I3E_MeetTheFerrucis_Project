@@ -77,6 +77,12 @@ public class Player : MonoBehaviour
         evidence = null;
     }
 
+    void OnInventory()
+    {
+        GameManager.instance.InventoryOn();
+        Debug.Log("q");
+    }
+
     void OnInteract()
     {
         interactionText.gameObject.SetActive(false);
@@ -121,14 +127,12 @@ public class Player : MonoBehaviour
         {
             interactionText.gameObject.SetActive(false);
             exitText.gameObject.SetActive(true);
-            Debug.Log("run222");
 
         }
         if(!evidence.searching)
         {
             interactionText.gameObject.SetActive(true);
             exitText.gameObject.SetActive(false);
-            Debug.Log("run222");
         }
     }
 }

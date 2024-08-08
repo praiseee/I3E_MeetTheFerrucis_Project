@@ -6,7 +6,6 @@ using TMPro;
 public class Dialogue : MonoBehaviour
 {
     public TextMeshProUGUI textComponent;
-    public string[] lines;
     public float textSpeed;
 
     public bool textActive = false;
@@ -21,106 +20,130 @@ public class Dialogue : MonoBehaviour
 
     public Player player;
 
+    // Struct to hold the dialogue line text and associated GameObject for UI
+    [System.Serializable]
+    public struct DialogueLine
+    {
+        public string lineText;
+        public GameObject speakerUI; // Associated GameObject for this line (e.g., a panel with speaker's portrait)
+    }
+
+    public DialogueLine[] dialogueLines; // Array of DialogueLine structs
+
     // Start is called before the first frame update
     void Start()
     {
         textComponent.text = string.Empty;
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (textActive)
-        {   
-           // buttonsHide.gameObject.SetActive(false);
-        }
-
-        if (!textActive)
-        {
-           // buttonsHide.gameObject.SetActive(true);
-        }
+        DeactivateAllSpeakerUI();
     }
 
     public void RunDialogue()
     {
-        if(evidence)
-        {
-            buttonsHide.gameObject.SetActive(false);
-        }
-        gameObject.SetActive(true);
-        StartDialogue();
-        textActive = true;
         
+        textActive = true;
+        index = 0;
+        gameObject.SetActive(true);
+
+        if (evidence)
+        {
+            buttonsHide.SetActive(false);
+        }
+        convoButtons.SetActive(false);
+
+        StartCoroutine(DisplayFirstLineWithDelay());
     }
 
-    void StartDialogue()
+    IEnumerator DisplayFirstLineWithDelay()
     {
-        textComponent.text = string.Empty;
-        index = 0;
-        if(!evidence)
-        {
-            convoButtons.gameObject.SetActive(false);
-        }
+        yield return new WaitForSeconds(0.01f);  // Slight delay before showing the first line to ensure proper initialization
+        DisplayLine();
+    }
+
+    void DisplayLine()
+    {
         
+        DeactivateAllSpeakerUI();
+
+        if (dialogueLines[index].speakerUI != null)
+        {
+            
+            dialogueLines[index].speakerUI.SetActive(true);
+        }
+
+        textComponent.text = string.Empty;
         StartCoroutine(TypeLine());
     }
 
     IEnumerator TypeLine()
     {
         yield return new WaitForSeconds(0.1f);
-        foreach (char c in lines[index].ToCharArray())
+        foreach (char c in dialogueLines[index].lineText.ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
         }
     }
-    
+
     void NextLine()
     {
-        if (index < lines.Length - 1)
+        if (index < dialogueLines.Length - 1)
         {
             index++;
-            textComponent.text = string.Empty;
-            StartCoroutine(TypeLine());
+            DisplayLine();
         }
         else
         {
-            if(!evidence)
+            if (!evidence)
             {
-                convoButtons.gameObject.SetActive(true);
+                convoButtons.SetActive(true);
             }
 
-            
-            
-            if(evidence)
+            if (evidence)
             {
                 player.ResetDialogue();
                 gameObject.SetActive(false);
                 DialogueEnd();
-                buttonsHide.gameObject.SetActive(true);
+                buttonsHide.SetActive(true);
             }
-            
-
         }
     }
 
     public void DialogueEnd()
     {
+       
         textActive = false;
+        DeactivateAllSpeakerUI();
     }
 
     public void SkipLine()
     {
-            if (textComponent.text == lines[index])
-            {
-                NextLine();
-            }
-            else
-            {
-                StopAllCoroutines();
-                textComponent.text = lines[index];
-            }
+        if (textComponent.text == dialogueLines[index].lineText)
+        {
+            NextLine();
+        }
+        else
+        {
+            StopAllCoroutines();
+            textComponent.text = dialogueLines[index].lineText;
+        }
+    }
+
+    // Deactivate all speaker UI elements
+    private void DeactivateAllSpeakerUI()
+    {
         
+        foreach (var line in dialogueLines)
+        {
+            if (line.speakerUI != null)
+            {
+                line.speakerUI.SetActive(false);
+            }
+        }
     }
 }
+
+
+
+
+
+

@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 
     private Dialogue dialogue;
 
-    public Evidence evidence;
+    private Evidence evidence;
 
     public void Update()
     {
@@ -33,9 +33,17 @@ public class Player : MonoBehaviour
             {
                 if(dialogue == null || !dialogue.textActive )
                 {
-                    if (evidence.searching)
+                    if (evidence == null)
                     {
+                        interactionText.gameObject.SetActive(true);
                         return;
+                    }
+                    else
+                    {
+                        if(evidence.searching)
+                        {
+                            return;
+                        }
                     }
                     interactionText.gameObject.SetActive(true);
                 }
@@ -62,6 +70,11 @@ public class Player : MonoBehaviour
     public void ResetDialogue()
     {
         dialogue = null;
+    }
+
+    public void ResetEvidence()
+    {
+        evidence = null;
     }
 
     void OnInteract()
@@ -95,18 +108,27 @@ public class Player : MonoBehaviour
         return;
     }
 
+    public void SetEvidence(Evidence newEvidence)
+    {
+        evidence = newEvidence;
+        Debug.Log(dialogue);
+        return;
+    }
+
     public void ExitText()
     {
         if(evidence.searching)
         {
             interactionText.gameObject.SetActive(false);
             exitText.gameObject.SetActive(true);
+            Debug.Log("run222");
 
         }
         if(!evidence.searching)
         {
             interactionText.gameObject.SetActive(true);
             exitText.gameObject.SetActive(false);
+            Debug.Log("run222");
         }
     }
 }

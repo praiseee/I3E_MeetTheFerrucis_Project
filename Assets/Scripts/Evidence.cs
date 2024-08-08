@@ -41,6 +41,7 @@ public class Evidence : Interactable
             StartCoroutine(ShowEvidenceButtonsWithDelay());
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            player.SetEvidence(this);
 
             // Disable player movement
             if (playerMovementScript != null)
@@ -50,6 +51,7 @@ public class Evidence : Interactable
 
             base.Interact(thePlayer);
             player.ExitText();
+            Debug.Log("run");
         }
         else
         {
@@ -66,6 +68,8 @@ public class Evidence : Interactable
                 playerMovementScript.enabled = true;
             }
             player.ExitText();
+            Debug.Log("run");
+            player.ResetEvidence();
         }
     }
 

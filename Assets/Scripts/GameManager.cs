@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     int evidenceDone = 0;
+    private bool inventoryShown = false;
 
     [SerializeField]
     TextMeshProUGUI outsidePoliceObjective;
@@ -17,6 +18,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject gateBorder;
+
+    [SerializeField]
+    private GameObject inventory;
 
     public void Awake()
     {
@@ -57,6 +61,20 @@ public class GameManager : MonoBehaviour
         gateBorder.SetActive(false);
         outsidePoliceObjective.gameObject.SetActive(false);
         evidenceObjective.gameObject.SetActive(true);
+    }
+
+    public void InventoryOn()
+    {
+        if(!inventoryShown)
+        {
+            inventory.gameObject.SetActive(true);
+        }
+
+        if(inventoryShown)
+        {
+            inventory.gameObject.SetActive(false);
+        }
+        
     }
 }
 

@@ -28,6 +28,9 @@ public class GrandfatherAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handle Character movement, move to walkpoint
+    /// </summary>
     void MoveToWalkPoint()
     {
         agent.SetDestination(walkPoint.transform.position);

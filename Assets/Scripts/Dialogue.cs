@@ -10,6 +10,7 @@ public class Dialogue : MonoBehaviour
 
     public bool textActive = false;
     public bool evidence = false;
+
     private int index;
 
     [SerializeField]
@@ -19,6 +20,8 @@ public class Dialogue : MonoBehaviour
     private GameObject convoButtons;
 
     public Player player;
+
+    public NPC npc;
 
     // Struct to hold the dialogue line text and associated GameObject for UI
     [System.Serializable]
@@ -105,6 +108,7 @@ public class Dialogue : MonoBehaviour
             if (evidence)
             {
                 player.ResetDialogue();
+                npc.ExitDialogue();
                 gameObject.SetActive(false);
                 DialogueEnd();
                 buttonsHide.SetActive(true);

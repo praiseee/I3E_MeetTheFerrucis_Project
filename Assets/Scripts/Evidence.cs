@@ -19,6 +19,8 @@ public class Evidence : Interactable
 
     public Player player;
 
+    public NPC npc;
+
     public Door linkedDoor;
 
     public bool searching = false;
@@ -123,5 +125,10 @@ public class Evidence : Interactable
         {
             linkedDoor.UnlockOutsideDoor();
         }
+    }
+
+    public void BankStatements()
+    {
+        npc.EvidenceTwoDone();
     }
 }

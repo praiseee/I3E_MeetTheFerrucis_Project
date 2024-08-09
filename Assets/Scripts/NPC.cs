@@ -12,6 +12,9 @@ public class NPC : Interactable
     [SerializeField]
     private float rotationSpeed = 2.0f;
 
+    // Reference to the reactiveAI script
+    public reactiveAI npcMovement;
+
     //NPCs
     public bool sister = false;
     public bool brother = false;
@@ -26,15 +29,32 @@ public class NPC : Interactable
 
     //Dialogue Brother
     public Dialogue brotherStarting;
+    public Dialogue brotherIdle;
+
+    //Dialogue Father 
+    public Dialogue fatherStarting;
+    public Dialogue fatherIdle;
+    public Dialogue fatherIdle2;
 
     //Dialogue Player
-    //public Dialogue playerSisterQuestioningOne;
+    public Dialogue talkToFatherFirstSister;
+    public Dialogue talkToFatherFirstBrother;
 
     //Dialogue chief
     public Dialogue chiefDialogue;
 
     //Conditions
-    private bool argueClueFound = false;
+    private static bool argueClueFound = false;
+    private static bool brotherOneDone = false;
+    private static bool fatherOneDone = false;
+    private static bool fatherTwoDone = false;
+    private static bool bankStatementsFound = false;
+
+
+    private void Awake()
+    {
+        //npcMovement = GetComponent<reactiveAI>();
+    }
 
     public override void Interact(Player thePlayer)
     {
@@ -43,6 +63,13 @@ public class NPC : Interactable
             talking = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            // Stop the NPC's movement
+            if(father)
+            {
+                npcMovement.StopMoving();
+            }
+            
 
             // Store the original rotation only if it's the first time talking
             if (!IsInvoking("StoreOriginalRotation"))
@@ -72,8 +99,17 @@ public class NPC : Interactable
         {
             if(!argueClueFound)
             {
-                sisterStarting.RunDialogue();
-                player.SetDialogue(sisterStarting);
+                if(!fatherOneDone)
+                {
+                    talkToFatherFirstSister.RunDialogue();
+                    player.SetDialogue(talkToFatherFirstSister);
+                }
+                else
+                {
+                    sisterStarting.RunDialogue();
+                    player.SetDialogue(sisterStarting); 
+                }
+                
             }
             else
             {
@@ -83,11 +119,60 @@ public class NPC : Interactable
         }
         if(brother)
         {
+            if (!brotherOneDone)
+            {
+                if(!fatherOneDone)
+                {
+                    talkToFatherFirstBrother.RunDialogue();
+                    player.SetDialogue(talkToFatherFirstBrother);
+                }
 
+                else
+                {
+                    brotherStarting.RunDialogue();
+                    player.SetDialogue(brotherStarting);
+                }
+                
+            }
+            else
+            {
+                brotherIdle.RunDialogue();
+                player.SetDialogue(brotherIdle);
+            }
+            
         }
         if(father)
         {
+            if (argueClueFound)
+            {
+                if(!fatherTwoDone)
+                {
+                    fatherIdle2.RunDialogue();
+                    player.SetDialogue(fatherIdle2);      
+                }
+                else
+                {
+                    fatherIdle.RunDialogue();
+                    player.SetDialogue(fatherIdle);
+                }
+                
+            }
+            else if (!fatherOneDone)
+            {
+                fatherStarting.RunDialogue();
+                player.SetDialogue(fatherStarting);
+            }
+            else if (bankStatementsFound)
+            {
+                fatherIdle2.RunDialogue();
+                player.SetDialogue(fatherIdle2);
+            }
 
+            else
+            {
+                fatherIdle.RunDialogue();
+                player.SetDialogue(fatherIdle);
+            }
         }
         if(grandfather)
         {
@@ -118,6 +203,13 @@ public class NPC : Interactable
         StopAllCoroutines(); // Stop any existing rotation coroutines to avoid conflicts
         StartCoroutine(SmoothReturnToOriginalRotation());
 
+        // Resume the NPC's movement
+        if(father)
+        {
+            npcMovement.ResumeMoving();
+        }
+
+
         // Enable player movement
         if (playerMovementScript != null)
         {
@@ -127,6 +219,10 @@ public class NPC : Interactable
 
     private IEnumerator SmoothLookAt(Transform target)
     {
+        if(brother)
+        {
+            yield break;
+        }
         Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
 
         // Smoothly rotate to look at the target
@@ -149,11 +245,31 @@ public class NPC : Interactable
         transform.rotation = originalRotation;
     }
 
-
     public void EvidenceOneDone()
     {
         argueClueFound = true;
     }
+
+    public void BrotherOneDone()
+    {
+        brotherOneDone = true;
+    }
+
+    public void FatherOneDone()
+    {
+        fatherOneDone = true;
+    }
+
+    public void FatherTwoDone()
+    {
+        fatherTwoDone = true;
+    }
+
+    public void EvidenceTwoDone()
+    {
+        bankStatementsFound = true;
+    }
 }
+
 
 

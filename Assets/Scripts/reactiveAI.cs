@@ -18,7 +18,7 @@ public class reactiveAI : MonoBehaviour
         agent.SetDestination(target);
     }
 
-    void IterateWaypointintIndex()
+    void IterateWaypointIndex()
     {
         waypointIndex++;
         if (waypointIndex == waypoints.Length)
@@ -37,10 +37,22 @@ public class reactiveAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(transform.position,target) < 1)
+        if (agent.enabled && Vector3.Distance(transform.position, target) < 1)
         {
-            IterateWaypointintIndex();
+            IterateWaypointIndex();
             UpdateDestination();
         }
     }
+
+    public void StopMoving()
+    {
+        agent.isStopped = true; // Stop the agent from moving
+    }
+
+    public void ResumeMoving()
+    {
+        agent.isStopped = false; // Resume the agent's movement
+        UpdateDestination(); // Update the destination to ensure it continues
+    }
 }
+

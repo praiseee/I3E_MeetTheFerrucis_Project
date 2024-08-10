@@ -79,8 +79,12 @@ public class Player : MonoBehaviour
 
     void OnInventory()
     {
-        GameManager.instance.InventoryOn();
-        Debug.Log("q");
+        if (dialogue == null || !dialogue.textActive )
+        {
+            GameManager.instance.InventoryOn();
+        }
+
+        
     }
 
     void OnInteract()

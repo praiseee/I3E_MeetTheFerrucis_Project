@@ -15,6 +15,12 @@ public class Door : Interactable
     [SerializeField]
     TextMeshProUGUI lockedDoorText;
 
+    [SerializeField]
+    private AudioSource interactionSound;
+
+    [SerializeField]
+    private AudioSource lockedSound;
+
     public Dialogue outsideDoorDialogue;
 
     public Dialogue insideDoorDialogue;
@@ -32,11 +38,12 @@ public class Door : Interactable
 
     public bool sceneChanger = false;
 
+    public LevelLoader levelLoader;
+
     bool outsideDoorLocked = true;
 
     bool insideDoorLocked = true;
 
-    public int sceneToChange;
 
     /// <summary>
     /// Flags if the door is locked
@@ -102,9 +109,15 @@ public class Door : Interactable
                 return;
             }
         }
-        
+        if(locked && !insideDoor && !outsideDoor)
+        {
+           lockedSound.Play();
+        }
+
         if(!locked && !opened)
         {
+            interactionSound.Play();
+
             // Create a new Vector3 and store the current rotation.
             Vector3 newRotation = transform.eulerAngles;
 
@@ -120,7 +133,8 @@ public class Door : Interactable
 
         if (sceneChanger)
         {
-            SceneManager.LoadScene(sceneToChange);
+            levelLoader.SwitchScene();
+
             if(outsideDoor)
             {
                 GameManager.instance.evidenceObjective.text = "Talk to the Dad";

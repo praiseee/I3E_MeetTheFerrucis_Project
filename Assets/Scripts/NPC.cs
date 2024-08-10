@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NPC : Interactable
 {
+
+
     bool talking = false;
     public Player player;
     [SerializeField]
@@ -87,6 +89,7 @@ public class NPC : Interactable
     {
         if (!talking)
         {
+
             talking = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;

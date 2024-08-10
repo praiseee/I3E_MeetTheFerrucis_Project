@@ -14,6 +14,7 @@ public class Evidence : Interactable
     [SerializeField]
     private MonoBehaviour playerMovementScript;
 
+
     [SerializeField]
     private GameObject evidenceButtons;
 
@@ -35,6 +36,7 @@ public class Evidence : Interactable
 
     public override void Interact(Player thePlayer)
     {
+
         if (!searching)
         {
             searching = true;

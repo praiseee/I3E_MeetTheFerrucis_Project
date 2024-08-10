@@ -91,37 +91,37 @@ public class GameManager : MonoBehaviour
     public void ArguementInventory()
     {
         evidenceInventory4.gameObject.SetActive(true);
-        evidenceObjective.text = "Talk to the Father";
+        //evidenceObjective.text = "Talk to the Father";
     }
 
     public void BankStatementInventory()
     {
         evidenceInventory5.gameObject.SetActive(true);
-        evidenceObjective.text = "Talk to the Father";
+        //evidenceObjective.text = "Talk to the Father";
     }
 
     public void VictimLeavingInventory()
     {
         evidenceInventory6.gameObject.SetActive(true);
-        evidenceObjective.text = "Talk to the Father";
+        //evidenceObjective.text = "Talk to the Father";
     }
 
     public void ShoeInventory()
     {
         evidenceInventory7.gameObject.SetActive(true);
-        evidenceObjective.text = "Talk to the Father";
+        //evidenceObjective.text = "Talk to the Father";
     }
 
     public void DadProtectInventory()
     {
         evidenceInventory8.gameObject.SetActive(true);
-        evidenceObjective.text = "Talk to the Son";
+        //evidenceObjective.text = "Talk to the Son";
     }
 
     public void KeyInventory()
     {
         evidenceInventory9.gameObject.SetActive(true);
-        evidenceObjective.text = "Talk to the Grandfather";
+        //evidenceObjective.text = "Talk to the Grandfather";
     }
 
     public void OutsidePoliceDone()

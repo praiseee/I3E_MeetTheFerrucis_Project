@@ -1,10 +1,10 @@
-/*
- * Author: Kishaan S/O Ellapparaja
- * Date: 11/08/2024
- * Description: 
- * This script handles NPC interactions, dialogue management, and the conditions required for progressing through the game. 
- * It controls NPC movement, dialogue sequences, and camera behavior during player interactions.
- */
+////
+ /// Author: Kishaan S/O Ellapparaja
+ /// Date: 11/08/2024
+ /// Description: 
+ /// This script handles NPC interactions, dialogue management, and the conditions required for progressing through the game. 
+ /// It controls NPC movement, dialogue sequences, and camera behavior during player interactions.
+ ////
 
 using System.Collections;
 using System.Collections.Generic;
@@ -141,8 +141,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Starts the appropriate dialogue sequence based on the current game conditions and the NPC's role.
-    * </summary>
+    /// Starts the appropriate dialogue sequence based on the current game conditions and the NPC's role.
+    /// </summary>
     public void StartDialogue()
     {
         // Dialogue handling for the sister NPC
@@ -373,8 +373,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Coroutine to smoothly rotate the NPC to face the target (player) during interaction.
-    * </summary>
+    /// Coroutine to smoothly rotate the NPC to face the target (player) during interaction.
+    /// </summary>
     /// <param name="target">The target to look at (usually the player).</param>
     /// <returns>An IEnumerator for the coroutine.</returns>
     private IEnumerator SmoothLookAt(Transform target)
@@ -388,22 +388,22 @@ public class NPC : Interactable
         // Smoothly rotate to look at the target
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.01f)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime); ///rotationSpeed
             yield return null;
         }
         transform.rotation = targetRotation;
     }
 
     /// <summary>
-    * Coroutine to smoothly rotate the NPC back to its original rotation after interaction.
-    * </summary>
+    /// Coroutine to smoothly rotate the NPC back to its original rotation after interaction.
+    /// </summary>
     /// <returns>An IEnumerator for the coroutine.</returns>
     private IEnumerator SmoothReturnToOriginalRotation()
     {
         // Smoothly rotate back to the original rotation
         while (Quaternion.Angle(transform.rotation, originalRotation) > 0.01f)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, originalRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, originalRotation, Time.deltaTime); ///rotationSpeed
             yield return null;
         }
         transform.rotation = originalRotation;
@@ -412,8 +412,8 @@ public class NPC : Interactable
     // Methods to set various game conditions and trigger inventory updates
 
     /// <summary>
-    * Sets the condition that the argue clue has been found and updates the inventory.
-    * </summary>
+    /// Sets the condition that the argue clue has been found and updates the inventory.
+    /// </summary>
     public void EvidenceOneDone()
     {
         argueClueFound = true;
@@ -422,24 +422,24 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the sister's second dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the sister's second dialogue has been completed.
+    /// </summary>
     public void SisterTwoDone()
     {
         sisterTwoDone = true;
     }
 
     /// <summary>
-    * Sets the condition that the brother's first dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the brother's first dialogue has been completed.
+    /// </summary>
     public void BrotherOneDone()
     {
         brotherOneDone = true;
     }
 
     /// <summary>
-    * Sets the condition that the brother's dialogues are fully completed and updates the inventory.
-    * </summary>
+    /// Sets the condition that the brother's dialogues are fully completed and updates the inventory.
+    /// </summary>
     public void BrotherDone()
     {
         brotherDone = true;
@@ -448,8 +448,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the father's first dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the father's first dialogue has been completed.
+    /// </summary>
     public void FatherOneDone()
     {
         fatherOneDone = true;
@@ -457,8 +457,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the father's second dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the father's second dialogue has been completed.
+    /// </summary>
     public void FatherTwoDone()
     {
         fatherTwoDone = true;
@@ -466,8 +466,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the father's third dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the father's third dialogue has been completed.
+    /// </summary>
     public void FatherThreeDone()
     {
         fatherThreeDone = true;
@@ -476,8 +476,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the father's fourth dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the father's fourth dialogue has been completed.
+    /// </summary>
     public void FatherFourDone()
     {
         fatherFourDone = true;
@@ -485,8 +485,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the grandfather's first dialogue has been completed.
-    * </summary>
+    /// Sets the condition that the grandfather's first dialogue has been completed.
+    /// </summary>
     public void GrandfatherOneDone()
     {
         grandfatherOneDone = true;
@@ -494,8 +494,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the bank statements have been found and updates the inventory.
-    * </summary>
+    /// Sets the condition that the bank statements have been found and updates the inventory.
+    /// </summary>
     public void EvidenceTwoDone()
     {
         bankStatementsFound = true;
@@ -504,8 +504,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the mother has left and updates the inventory.
-    * </summary>
+    /// Sets the condition that the mother has left and updates the inventory.
+    /// </summary>
     public void EvidenceThreeDone()
     {
         motherLeave = true;
@@ -514,8 +514,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the shoe has been found and updates the inventory.
-    * </summary>
+    /// Sets the condition that the shoe has been found and updates the inventory.
+    /// </summary>
     public void EvidenceFourDone()
     {
         shoeFound = true;
@@ -524,8 +524,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the first killer (father) has been identified and updates the inventory.
-    * </summary>
+    /// Sets the condition that the first killer (father) has been identified and updates the inventory.
+    /// </summary>
     public void KillerOne()
     {
         killerOne = true;
@@ -535,8 +535,8 @@ public class NPC : Interactable
     }
 
     /// <summary>
-    * Sets the condition that the second killer (grandfather) has been identified and updates the inventory.
-    * </summary>
+    /// Sets the condition that the second killer (grandfather) has been identified and updates the inventory.
+    /// </summary>
     public void KillerTwo()
     {
         murderWeapon += 1;

@@ -9,10 +9,14 @@ public class reactiveAI : MonoBehaviour
     public Transform[] downstairsWaypoints;
     public Transform[] sittingDownWaypoints;
     public Door linkedDoor; // Reference to the Door script
+    public Door linkedDoor2;
+    public Door linkedDoor3;
 
     private bool useDownstairsWaypoints = false;
     private bool useSittingDownWaypoints = false;
     private bool destinationReached = false;
+
+    public Animator npcAnimator;
 
     int waypointIndex;
     Vector3 target;
@@ -40,17 +44,51 @@ public class reactiveAI : MonoBehaviour
         waypointIndex++;
 
         // Check if the current waypoint index triggers the door
-        if (waypointIndex == 3/* set the index that triggers the door */)
+        if(useSittingDownWaypoints)
         {
-            OpenAndCloseDoor();
+            if (waypointIndex == 1  )
+            {
+                OpenAndCloseDoor3();
+            }
+
+            if (waypointIndex == 4  )
+            {
+                OpenAndCloseDoor2();
+            }
+
+            if (waypointIndex == 10  )
+            {
+                OpenAndCloseDoor();
+            }
         }
+        else if(useDownstairsWaypoints)
+        {
+            
+            if (waypointIndex == 5  )
+            {
+                OpenAndCloseDoor2();
+            }
+            if (waypointIndex == 7  )
+            {
+                OpenAndCloseDoor3();
+            }
+        }
+        else
+        {
+            if (waypointIndex == 3 || waypointIndex == 6 )
+            {
+                OpenAndCloseDoor();
+            }
+        }
+        
 
         if (useSittingDownWaypoints)
         {
-            if (waypointIndex == 6)
+            if (waypointIndex == 12)
             {
                 agent.isStopped = true;
                 destinationReached = true;
+                npcAnimator.SetTrigger("IsTrigger");
                 return;
             }
         }
@@ -60,6 +98,7 @@ public class reactiveAI : MonoBehaviour
             {
                 agent.isStopped = true;
                 destinationReached = true;
+                npcAnimator.SetTrigger("IsTrigger");
                 return;
             }
         }
@@ -82,6 +121,30 @@ public class reactiveAI : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         linkedDoor.CloseDoor();
+    }
+
+    void OpenAndCloseDoor2()
+    {
+        linkedDoor2.OpenDoor();
+        StartCoroutine(CloseDoorAfterDelay2());
+    }
+
+    IEnumerator CloseDoorAfterDelay2()
+    {
+        yield return new WaitForSeconds(2f);
+        linkedDoor2.CloseDoor();
+    }
+
+    void OpenAndCloseDoor3()
+    {
+        linkedDoor3.OpenDoor();
+        StartCoroutine(CloseDoorAfterDelay3());
+    }
+
+    IEnumerator CloseDoorAfterDelay3()
+    {
+        yield return new WaitForSeconds(2f);
+        linkedDoor3.CloseDoor();
     }
 
     void Start()
@@ -119,6 +182,7 @@ public class reactiveAI : MonoBehaviour
 
     public void Downstairs()
     {
+        npcAnimator.SetTrigger("IsTrigger");
         StopMoving();
         waypointIndex = 0;
         useSittingDownWaypoints = false;
@@ -128,11 +192,13 @@ public class reactiveAI : MonoBehaviour
 
     public void SittingDown()
     {
+        npcAnimator.SetTrigger("IsTrigger");
         StopMoving();
         waypointIndex = 0;
         useDownstairsWaypoints = false;
         useSittingDownWaypoints = true;
-        ResumeMoving();
+        UpdateDestination();
+        agent.isStopped = false;
     }
 }
 

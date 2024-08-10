@@ -17,6 +17,8 @@ public class Door : Interactable
 
     public Dialogue outsideDoorDialogue;
 
+    public Dialogue insideDoorDialogue;
+
     public Player player;
 
     /// <summary>
@@ -26,9 +28,13 @@ public class Door : Interactable
 
     public bool outsideDoor = false;
 
+    public bool insideDoor = false;
+
     public bool sceneChanger = false;
 
     bool outsideDoorLocked = true;
+
+    bool insideDoorLocked = true;
 
     public int sceneToChange;
 
@@ -50,6 +56,11 @@ public class Door : Interactable
     public void UnlockOutsideDoor()
     {
         outsideDoorLocked = false;
+    }
+
+    public void UnlockInsideDoor()
+    {
+        insideDoorLocked = false;
     }
 
     /// <summary>
@@ -78,6 +89,16 @@ public class Door : Interactable
             {
                 outsideDoorDialogue.RunDialogue();
                 player.SetDialogue(outsideDoorDialogue);
+                return;
+            }
+        }
+
+        if (insideDoor)
+        {
+            if (insideDoorLocked)
+            {
+                insideDoorDialogue.RunDialogue();
+                player.SetDialogue(insideDoorDialogue);
                 return;
             }
         }

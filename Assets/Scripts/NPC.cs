@@ -15,6 +15,10 @@ public class NPC : Interactable
     // Reference to the reactiveAI script
     public reactiveAI npcMovement;
 
+    //public NPCFollow npcFollow;
+
+    public Animator npcAnimator;
+
     //NPCs
     public bool sister = false;
     public bool brother = false;
@@ -48,6 +52,7 @@ public class NPC : Interactable
     //Dialogue Grandfather
     public Dialogue grandfatherIdle;
     public Dialogue grandfatherKiller;
+    public Dialogue grandfatherFollow;
 
     //Dialogue Player
     public Dialogue talkToFatherFirstSister;
@@ -69,6 +74,8 @@ public class NPC : Interactable
     private static bool shoeFound = false;
     private static bool motherLeave = false;
     private static bool killerOne = false;
+    private static bool killerTwo = false;
+    private float murderWeapon = 0;
 
     private void Awake()
     {
@@ -88,7 +95,12 @@ public class NPC : Interactable
             {
                 npcMovement.StopMoving();
             }
-            
+        
+            // Stop the NPC's animation
+            if (npcAnimator != null)
+            {
+                npcAnimator.SetTrigger("IsTrigger");
+            }
 
             // Store the original rotation only if it's the first time talking
             if (!IsInvoking("StoreOriginalRotation"))
@@ -101,7 +113,7 @@ public class NPC : Interactable
             StartCoroutine(SmoothLookAt(player.transform));
 
             StartDialogue();
-        
+    
             // Disable player movement
             if (playerMovementScript != null)
             {
@@ -276,12 +288,17 @@ public class NPC : Interactable
         }
         if(grandfather)
         {
-            if (brotherDone)
+            if (brotherDone && !killerTwo)
             {
                 grandfatherKiller.RunDialogue();
-                player.SetDialogue(grandfatherKiller);
+                player.SetDialogue(grandfatherKiller); 
             }
 
+            else if(killerTwo)
+            {
+                grandfatherFollow.RunDialogue();
+                player.SetDialogue(grandfatherFollow);
+            }
             else
             {
                 grandfatherIdle.RunDialogue();
@@ -319,6 +336,11 @@ public class NPC : Interactable
             npcMovement.ResumeMoving();
         }
 
+        // Resume the NPC's animation
+        if (npcAnimator != null)
+        {
+            npcAnimator.SetTrigger("IsTrigger");
+        }
 
         // Enable player movement
         if (playerMovementScript != null)
@@ -414,6 +436,15 @@ public class NPC : Interactable
     public void KillerOne()
     {
         killerOne = true;
+    }
+
+    public void KillerTwo()
+    {
+        murderWeapon = murderWeapon + 1;
+        if (murderWeapon == 2)
+        {
+            killerTwo = true;
+        }
     }
 }
 

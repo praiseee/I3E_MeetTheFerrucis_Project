@@ -1,9 +1,10 @@
 /*
- * Author: Elyas Chua-Aziz
- * Date: 20/05/2024
+ * Author: Kishaan S/O Ellapparaja
+ * Date: 11/08/2024
  * Description: 
  * Contains functions related to the Interactable
  */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

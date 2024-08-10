@@ -1,120 +1,155 @@
 /*
- * Author: Elyas Chua-Aziz
- * Date: 06/05/2024
+ * Author: Kishaan S/O Ellapparaja
+ * Date: 11/08/2024
  * Description: 
  * The door that opens when the player is near it and presses the interact button.
  */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+/// <summary>
+/// Handles door interactions, including opening, closing, locking, and scene transitions.
+/// </summary>
 public class Door : Interactable
 {
+    /// <summary>
+    /// Text to display when the door is locked.
+    /// </summary>
     [SerializeField]
     TextMeshProUGUI lockedDoorText;
 
+    /// <summary>
+    /// Audio source for the interaction sound.
+    /// </summary>
     [SerializeField]
     private AudioSource interactionSound;
 
+    /// <summary>
+    /// Audio source for the locked door sound.
+    /// </summary>
     [SerializeField]
     private AudioSource lockedSound;
 
+    /// <summary>
+    /// Dialogue to run when the player interacts with the outside door.
+    /// </summary>
     public Dialogue outsideDoorDialogue;
 
+    /// <summary>
+    /// Dialogue to run when the player interacts with the inside door.
+    /// </summary>
     public Dialogue insideDoorDialogue;
 
+    /// <summary>
+    /// Reference to the player.
+    /// </summary>
     public Player player;
 
     /// <summary>
-    /// Flags if the door is open
+    /// Indicates whether the door is currently open.
     /// </summary>
     bool opened = false;
 
+    /// <summary>
+    /// Indicates if this door is an outside door.
+    /// </summary>
     public bool outsideDoor = false;
 
+    /// <summary>
+    /// Indicates if this door is an inside door.
+    /// </summary>
     public bool insideDoor = false;
 
+    /// <summary>
+    /// Indicates if this door triggers a scene change.
+    /// </summary>
     public bool sceneChanger = false;
 
+    /// <summary>
+    /// Reference to the LevelLoader for handling scene transitions.
+    /// </summary>
     public LevelLoader levelLoader;
 
+    /// <summary>
+    /// Indicates if the outside door is locked.
+    /// </summary>
     bool outsideDoorLocked = true;
 
+    /// <summary>
+    /// Indicates if the inside door is locked.
+    /// </summary>
     bool insideDoorLocked = true;
 
-
     /// <summary>
-    /// Flags if the door is locked
+    /// Indicates if the door is locked.
     /// </summary>
     public bool locked = false;
     
     /// <summary>
-    /// Flags if the player is near
+    /// Indicates if the player is near the door.
     /// </summary>
     bool playerNear = false;
 
     /// <summary>
-    /// Flags if an NPC is near
+    /// Indicates if an NPC is near the door.
     /// </summary>
     bool npcNear = false;
 
+    /// <summary>
+    /// Unlocks the outside door.
+    /// </summary>
     public void UnlockOutsideDoor()
     {
         outsideDoorLocked = false;
     }
 
+    /// <summary>
+    /// Unlocks the inside door.
+    /// </summary>
     public void UnlockInsideDoor()
     {
         insideDoorLocked = false;
     }
 
     /// <summary>
-    /// Handles the door's interaction
+    /// Handles the door's interaction when the player presses the interact button.
     /// </summary>
-    /// <param name="thePlayer">The player that interacted with the door</param>
+    /// <param name="thePlayer">The player that interacted with the door.</param>
     public override void Interact(Player thePlayer)
     {
-        // Call the Interact function from the base Interactable class.
         base.Interact(thePlayer);
-
-        // Call the OpenDoor() function
         OpenDoor();
     }
 
     /// <summary>
-    /// Handles the door opening 
+    /// Handles the logic for opening the door.
     /// </summary>
     public void OpenDoor()
     {
-        // Door should open only when it is not locked
-        // and not already opened.
-        if (outsideDoor)
+        if (outsideDoor && outsideDoorLocked)
         {
-            if (outsideDoorLocked)
-            {
-                outsideDoorDialogue.RunDialogue();
-                player.SetDialogue(outsideDoorDialogue);
-                return;
-            }
+            outsideDoorDialogue.RunDialogue();
+            player.SetDialogue(outsideDoorDialogue);
+            return;
         }
 
-        if (insideDoor)
+        if (insideDoor && insideDoorLocked)
         {
-            if (insideDoorLocked)
-            {
-                insideDoorDialogue.RunDialogue();
-                player.SetDialogue(insideDoorDialogue);
-                return;
-            }
-        }
-        if(locked && !insideDoor && !outsideDoor)
-        {
-           lockedSound.Play();
+            insideDoorDialogue.RunDialogue();
+            player.SetDialogue(insideDoorDialogue);
+            return;
         }
 
-        if(!locked && !opened)
+        if (locked && !insideDoor && !outsideDoor)
+        {
+            lockedSound.Play();
+        }
+
+        if (!locked && !opened)
         {
             interactionSound.Play();
 
@@ -135,26 +170,23 @@ public class Door : Interactable
         {
             levelLoader.SwitchScene();
 
-            if(outsideDoor)
+            if (outsideDoor)
             {
                 GameManager.instance.evidenceObjective.text = "Talk to the Dad";
             }
-            if(insideDoor)
+            if (insideDoor)
             {
                 GameManager.instance.evidenceObjective.gameObject.SetActive(false);
             }
-
         }
     }
 
     /// <summary>
-    /// Handles the door closing 
+    /// Handles the logic for closing the door.
     /// </summary>
     public void CloseDoor()
     {
-        // Door should close only when it is not locked
-        // and already opened.
-        if(!locked && opened)
+        if (!locked && opened)
         {
             // Create a new Vector3 and store the current rotation.
             Vector3 newRotation = transform.eulerAngles;
@@ -173,44 +205,38 @@ public class Door : Interactable
     /// <summary>
     /// Sets the lock status of the door.
     /// </summary>
-    /// <param name="lockStatus">The lock status of the door</param>
+    /// <param name="lockStatus">The lock status of the door.</param>
     public void SetLock(bool lockStatus)
     {
-        // Assign the lockStatus value to the locked bool.
         locked = lockStatus;
     }
 
     /// <summary>
-    /// Sets the player near status and starts the coroutine to close the door.
+    /// Sets the status of the player being near the door and handles closing the door if necessary.
     /// </summary>
-    /// <param name="isNear">Is the player near the door</param>
+    /// <param name="isNear">Is the player near the door.</param>
     public void SetPlayerNear(bool isNear)
     {
-        // Assign the isNear value to the playerNear bool.
         playerNear = isNear;
 
-        // If the player is no longer near, start the coroutine to close the door.
-        if(!playerNear && !npcNear)
+        if (!playerNear && !npcNear)
         {
             StartCoroutine(CloseDoorAfterDelay());
         }
     }
 
     /// <summary>
-    /// Sets the NPC near status and handles door opening.
+    /// Sets the status of an NPC being near the door and handles opening/closing the door.
     /// </summary>
-    /// <param name="isNear">Is an NPC near the door</param>
+    /// <param name="isNear">Is an NPC near the door.</param>
     public void SetNPCNear(bool isNear)
     {
-        // Assign the isNear value to the npcNear bool.
         npcNear = isNear;
 
-        // If the NPC is near and the door isn't already opened, open the door.
         if (npcNear && !opened)
         {
             OpenDoor();
         }
-        // If the NPC is no longer near and the player is also not near, start the coroutine to close the door.
         else if (!npcNear && !playerNear)
         {
             StartCoroutine(CloseDoorAfterDelay());
@@ -218,28 +244,25 @@ public class Door : Interactable
     }
 
     /// <summary>
-    /// Coroutine to close the door after a delay.
+    /// Coroutine to close the door after a delay if no one is near.
     /// </summary>
-    /// <returns></returns>
     private IEnumerator CloseDoorAfterDelay()
     {
-        // Wait for 3 seconds.
         yield return new WaitForSeconds(1f);
 
-        // Close the door if neither the player nor an NPC is near.
-        if(!playerNear && !npcNear)
+        if (!playerNear && !npcNear)
         {
             CloseDoor();
         }
     }
 
     /// <summary>
-    /// Called when another collider enters the trigger collider.
+    /// Triggered when another collider enters the trigger collider.
     /// </summary>
-    /// <param name="other">The collider that entered the trigger</param>
+    /// <param name="other">The collider that entered the trigger.</param>
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             SetPlayerNear(true);
         }
@@ -250,12 +273,12 @@ public class Door : Interactable
     }
 
     /// <summary>
-    /// Called when another collider exits the trigger collider.
+    /// Triggered when another collider exits the trigger collider.
     /// </summary>
-    /// <param name="other">The collider that exited the trigger</param>
+    /// <param name="other">The collider that exited the trigger.</param>
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             SetPlayerNear(false);
         }
@@ -265,6 +288,4 @@ public class Door : Interactable
         }
     }
 }
-
-
 

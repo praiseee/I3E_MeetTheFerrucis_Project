@@ -121,6 +121,15 @@ public class Door : Interactable
         if (sceneChanger)
         {
             SceneManager.LoadScene(sceneToChange);
+            if(outsideDoor)
+            {
+                GameManager.instance.evidenceObjective.text = "Talk to the Dad";
+            }
+            if(insideDoor)
+            {
+                GameManager.instance.evidenceObjective.gameObject.SetActive(false);
+            }
+
         }
     }
 

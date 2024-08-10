@@ -14,7 +14,9 @@ public class reactiveAI : MonoBehaviour
 
     private bool useDownstairsWaypoints = false;
     private bool useSittingDownWaypoints = false;
-    private bool destinationReached = false;
+    public bool destinationReached = false;
+
+    public bool police = false;
 
     public Animator npcAnimator;
 
@@ -44,7 +46,7 @@ public class reactiveAI : MonoBehaviour
         waypointIndex++;
 
         // Check if the current waypoint index triggers the door
-        if(useSittingDownWaypoints)
+        if(useSittingDownWaypoints && !police)
         {
             if (waypointIndex == 1  )
             {
@@ -61,7 +63,7 @@ public class reactiveAI : MonoBehaviour
                 OpenAndCloseDoor();
             }
         }
-        else if(useDownstairsWaypoints)
+        else if(useDownstairsWaypoints && !police)
         {
             
             if (waypointIndex == 5  )
@@ -75,9 +77,14 @@ public class reactiveAI : MonoBehaviour
         }
         else
         {
+
             if (waypointIndex == 3 || waypointIndex == 6 )
             {
-                OpenAndCloseDoor();
+                if(!police)
+                {
+                    OpenAndCloseDoor();
+                }
+                
             }
         }
         
@@ -198,6 +205,7 @@ public class reactiveAI : MonoBehaviour
         useDownstairsWaypoints = false;
         useSittingDownWaypoints = true;
         UpdateDestination();
+        destinationReached = false;
         agent.isStopped = false;
     }
 }

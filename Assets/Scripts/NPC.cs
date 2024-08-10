@@ -70,6 +70,7 @@ public class NPC : Interactable
     private static bool fatherTwoDone = false;
     private static bool fatherThreeDone = false;
     private static bool fatherFourDone = false;
+    private static bool grandfatherOneDone = false;
     private static bool bankStatementsFound = false;
     private static bool shoeFound = false;
     private static bool motherLeave = false;
@@ -99,7 +100,11 @@ public class NPC : Interactable
             // Stop the NPC's animation
             if (npcAnimator != null)
             {
-                npcAnimator.SetTrigger("IsTrigger");
+                if(!npcMovement.destinationReached)
+                {
+                    npcAnimator.SetTrigger("IsTrigger");
+                }
+                
             }
 
             // Store the original rotation only if it's the first time talking
@@ -290,8 +295,17 @@ public class NPC : Interactable
         {
             if (brotherDone && !killerTwo)
             {
-                grandfatherKiller.RunDialogue();
-                player.SetDialogue(grandfatherKiller); 
+                if(!grandfatherOneDone)
+                {
+                    grandfatherKiller.RunDialogue();
+                    player.SetDialogue(grandfatherKiller);
+                }
+                else
+                {
+                    grandfatherIdle.RunDialogue();
+                    player.SetDialogue(grandfatherIdle);
+                }
+                 
             }
 
             else if(killerTwo)
@@ -377,9 +391,13 @@ public class NPC : Interactable
         transform.rotation = originalRotation;
     }
 
+
+
     public void EvidenceOneDone()
     {
         argueClueFound = true;
+        GameManager.instance.ArguementInventory();
+        GameManager.instance.evidenceObjective.text = "Talk to the Dad";
     }
 
     public void SisterTwoDone()
@@ -395,47 +413,68 @@ public class NPC : Interactable
     public void BrotherDone()
     {
         brotherDone = true;
+        GameManager.instance.KeyInventory();
+        GameManager.instance.evidenceObjective.text = "Talk to the Grandfather";
     }
 
     public void FatherOneDone()
     {
         fatherOneDone = true;
+        GameManager.instance.evidenceObjective.text = "Talk to the Kids";
     }
 
     public void FatherTwoDone()
     {
         fatherTwoDone = true;
+        GameManager.instance.evidenceObjective.text = "Search the house for clues";
     }
 
     public void FatherThreeDone()
     {
         fatherThreeDone = true;
         brotherOneDone = true;
+        GameManager.instance.evidenceObjective.text = "Talk to the Kids";
     }
 
     public void FatherFourDone()
     {
         fatherFourDone = true;
+        GameManager.instance.evidenceObjective.text = "Investigate the Bathtub";
+    }
+
+    public void GrandfatherOneDone()
+    {
+        grandfatherOneDone = true;
+        GameManager.instance.evidenceObjective.text = "Search the Shelf";
     }
 
     public void EvidenceTwoDone()
     {
         bankStatementsFound = true;
+        GameManager.instance.BankStatementInventory();
+        GameManager.instance.evidenceObjective.text = "Talk to the Father";
     }
 
     public void EvidenceThreeDone()
     {
         motherLeave = true;
+        GameManager.instance.VictimLeavingInventory();
+        GameManager.instance.evidenceObjective.text = "Find the Father";
     }
 
     public void EvidenceFourDone()
     {
         shoeFound = true;
+        GameManager.instance.ShoeInventory();
+        GameManager.instance.evidenceObjective.text = "Talk to the Father";
     }
 
     public void KillerOne()
     {
         killerOne = true;
+        GameManager.instance.DadProtectInventory();
+        GameManager.instance.evidenceObjective.text = "Arrest the Brother";
+        npcAnimator.SetTrigger("IsTrigger");
     }
 
     public void KillerTwo()
@@ -444,6 +483,7 @@ public class NPC : Interactable
         if (murderWeapon == 2)
         {
             killerTwo = true;
+            GameManager.instance.evidenceObjective.text = "Arrest the Grandfather";
         }
     }
 }

@@ -7,10 +7,11 @@ public class Collectible : Interactable
     [SerializeField]
     private AudioClip collectAudio;
 
-    public int myScore = 5;
 
     bool opened = false;
     bool opening = false;
+
+    static bool disabled = true;
 
     public float moveDistance = -2f; // Distance to move forward
     public float backDistance = 1f;
@@ -28,13 +29,17 @@ public class Collectible : Interactable
 
     public override void Interact(Player thePlayer)
     {
-        if (!opening)
+        if(!disabled)
         {
-            opening = true;
-            base.Interact(thePlayer);
-            AudioSource.PlayClipAtPoint(collectAudio, transform.position, 1f);
-            Collected();
+            if (!opening)
+            {
+                opening = true;
+                base.Interact(thePlayer);
+                AudioSource.PlayClipAtPoint(collectAudio, transform.position, 1f);
+                Collected();
+            }
         }
+        
 
         
     }
@@ -65,6 +70,11 @@ public class Collectible : Interactable
 
         transform.position = targetPosition;
         opening = false;
+    }
+
+    public void Unlock()
+    {
+        disabled = false;
     }
 }
 

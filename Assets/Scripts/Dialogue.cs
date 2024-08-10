@@ -108,7 +108,10 @@ public class Dialogue : MonoBehaviour
             if (evidence)
             {
                 player.ResetDialogue();
-                npc.ExitDialogue();
+                if(npc != null)
+                {
+                    npc.ExitDialogue();
+                }
                 gameObject.SetActive(false);
                 DialogueEnd();
                 buttonsHide.SetActive(true);

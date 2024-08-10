@@ -1,43 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class reactiveAI : MonoBehaviour
 {
     public Transform[] waypoints;
-    int waypointIndex;
+    public Transform[] downstairsWaypoints;
+    public Transform[] sittingDownWaypoints;
+    public Door linkedDoor; // Reference to the Door script
 
+    private bool useDownstairsWaypoints = false;
+    private bool useSittingDownWaypoints = false;
+    private bool destinationReached = false;
+
+    int waypointIndex;
     Vector3 target;
     NavMeshAgent agent;
 
     void UpdateDestination()
     {
-        target = waypoints[waypointIndex].position;
+        if (useSittingDownWaypoints)
+        {
+            target = sittingDownWaypoints[waypointIndex].position;
+        }
+        else if (useDownstairsWaypoints)
+        {
+            target = downstairsWaypoints[waypointIndex].position;
+        }
+        else
+        {
+            target = waypoints[waypointIndex].position;
+        }
         agent.SetDestination(target);
     }
 
     void IterateWaypointIndex()
     {
         waypointIndex++;
-        if (waypointIndex == waypoints.Length)
+
+        // Check if the current waypoint index triggers the door
+        if (waypointIndex == 3/* set the index that triggers the door */)
         {
-            waypointIndex = 0; 
+            OpenAndCloseDoor();
+        }
+
+        if (useSittingDownWaypoints)
+        {
+            if (waypointIndex == 6)
+            {
+                agent.isStopped = true;
+                destinationReached = true;
+                return;
+            }
+        }
+        else if (useDownstairsWaypoints)
+        {
+            if (waypointIndex == 8)
+            {
+                agent.isStopped = true;
+                destinationReached = true;
+                return;
+            }
+        }
+        else
+        {
+            if (waypointIndex == waypoints.Length)
+            {
+                waypointIndex = 0;
+            }
         }
     }
 
-    // Start is called before the first frame update
+    void OpenAndCloseDoor()
+    {
+        linkedDoor.OpenDoor();
+        StartCoroutine(CloseDoorAfterDelay());
+    }
+
+    IEnumerator CloseDoorAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        linkedDoor.CloseDoor();
+    }
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         UpdateDestination();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (agent.enabled && Vector3.Distance(transform.position, target) < 1)
+        if (agent.enabled && !agent.isStopped && Vector3.Distance(transform.position, target) < 1)
         {
             IterateWaypointIndex();
             UpdateDestination();
@@ -46,13 +101,41 @@ public class reactiveAI : MonoBehaviour
 
     public void StopMoving()
     {
-        agent.isStopped = true; // Stop the agent from moving
+        agent.isStopped = true;
     }
 
     public void ResumeMoving()
     {
-        agent.isStopped = false; // Resume the agent's movement
-        UpdateDestination(); // Update the destination to ensure it continues
+        if(!destinationReached)
+        {
+            agent.isStopped = false;
+        }
+
+        if(!agent.isStopped)
+        {
+            UpdateDestination();
+        }
+    }
+
+    public void Downstairs()
+    {
+        StopMoving();
+        waypointIndex = 0;
+        useSittingDownWaypoints = false;
+        useDownstairsWaypoints = true;
+        ResumeMoving();
+    }
+
+    public void SittingDown()
+    {
+        StopMoving();
+        waypointIndex = 0;
+        useDownstairsWaypoints = false;
+        useSittingDownWaypoints = true;
+        ResumeMoving();
     }
 }
+
+
+
 

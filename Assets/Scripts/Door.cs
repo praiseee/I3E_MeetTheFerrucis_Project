@@ -42,6 +42,11 @@ public class Door : Interactable
     /// </summary>
     bool playerNear = false;
 
+    /// <summary>
+    /// Flags if an NPC is near
+    /// </summary>
+    bool npcNear = false;
+
     public void UnlockOutsideDoor()
     {
         outsideDoorLocked = false;
@@ -77,7 +82,6 @@ public class Door : Interactable
             }
         }
         
-
         if(!locked && !opened)
         {
             // Create a new Vector3 and store the current rotation.
@@ -93,26 +97,17 @@ public class Door : Interactable
             opened = true;
         }
 
-        if (locked)
-        {
-
-        }
-
         if (sceneChanger)
         {
             SceneManager.LoadScene(sceneToChange);
         }
-
     }
-
-
 
     /// <summary>
     /// Handles the door closing 
     /// </summary>
     public void CloseDoor()
     {
-
         // Door should close only when it is not locked
         // and already opened.
         if(!locked && opened)
@@ -141,8 +136,6 @@ public class Door : Interactable
         locked = lockStatus;
     }
 
-    
-
     /// <summary>
     /// Sets the player near status and starts the coroutine to close the door.
     /// </summary>
@@ -153,7 +146,28 @@ public class Door : Interactable
         playerNear = isNear;
 
         // If the player is no longer near, start the coroutine to close the door.
-        if(!playerNear)
+        if(!playerNear && !npcNear)
+        {
+            StartCoroutine(CloseDoorAfterDelay());
+        }
+    }
+
+    /// <summary>
+    /// Sets the NPC near status and handles door opening.
+    /// </summary>
+    /// <param name="isNear">Is an NPC near the door</param>
+    public void SetNPCNear(bool isNear)
+    {
+        // Assign the isNear value to the npcNear bool.
+        npcNear = isNear;
+
+        // If the NPC is near and the door isn't already opened, open the door.
+        if (npcNear && !opened)
+        {
+            OpenDoor();
+        }
+        // If the NPC is no longer near and the player is also not near, start the coroutine to close the door.
+        else if (!npcNear && !playerNear)
         {
             StartCoroutine(CloseDoorAfterDelay());
         }
@@ -168,8 +182,8 @@ public class Door : Interactable
         // Wait for 3 seconds.
         yield return new WaitForSeconds(1f);
 
-        // Close the door if the player is still not near.
-        if(!playerNear)
+        // Close the door if neither the player nor an NPC is near.
+        if(!playerNear && !npcNear)
         {
             CloseDoor();
         }
@@ -185,6 +199,10 @@ public class Door : Interactable
         {
             SetPlayerNear(true);
         }
+        else if (other.CompareTag("NPC"))
+        {
+            SetNPCNear(true);
+        }
     }
 
     /// <summary>
@@ -197,7 +215,12 @@ public class Door : Interactable
         {
             SetPlayerNear(false);
         }
+        else if (other.CompareTag("NPC"))
+        {
+            SetNPCNear(false);
+        }
     }
 }
+
 
 

@@ -26,15 +26,28 @@ public class NPC : Interactable
     //Dialogue Sister
     public Dialogue sisterStarting;
     public Dialogue sisterIdle;
+    public Dialogue sisterArgue;
 
     //Dialogue Brother
     public Dialogue brotherStarting;
     public Dialogue brotherIdle;
+    public Dialogue brotherArgue;
+    public Dialogue brotherKiller;
+    public Dialogue brotherEnd;
+
 
     //Dialogue Father 
     public Dialogue fatherStarting;
     public Dialogue fatherIdle;
     public Dialogue fatherIdle2;
+    public Dialogue fatherBank;
+    public Dialogue fatherShoe;
+    public Dialogue fatherFinal;
+    public Dialogue fatherDone;
+
+    //Dialogue Grandfather
+    public Dialogue grandfatherIdle;
+    public Dialogue grandfatherKiller;
 
     //Dialogue Player
     public Dialogue talkToFatherFirstSister;
@@ -45,11 +58,17 @@ public class NPC : Interactable
 
     //Conditions
     private static bool argueClueFound = false;
+    private static bool sisterTwoDone = false;
     private static bool brotherOneDone = false;
+    private static bool brotherDone = false;
     private static bool fatherOneDone = false;
     private static bool fatherTwoDone = false;
+    private static bool fatherThreeDone = false;
+    private static bool fatherFourDone = false;
     private static bool bankStatementsFound = false;
-
+    private static bool shoeFound = false;
+    private static bool motherLeave = false;
+    private static bool killerOne = false;
 
     private void Awake()
     {
@@ -111,6 +130,21 @@ public class NPC : Interactable
                 }
                 
             }
+            else if (fatherThreeDone)
+            {
+
+                if (!sisterTwoDone)
+                {
+                    sisterArgue.RunDialogue();
+                    player.SetDialogue(sisterArgue);
+                }
+                else
+                {
+                    sisterIdle.RunDialogue();
+                    player.SetDialogue(sisterIdle);
+                }
+                
+            }
             else
             {
                 sisterIdle.RunDialogue();
@@ -134,6 +168,34 @@ public class NPC : Interactable
                 }
                 
             }
+            else if (fatherThreeDone && !killerOne)
+            {
+
+                if (!motherLeave)
+                {
+                    brotherArgue.RunDialogue();
+                    player.SetDialogue(brotherArgue);
+                }
+                else
+                {
+                    brotherIdle.RunDialogue();
+                    player.SetDialogue(brotherIdle);
+                }
+                
+            }
+            else if (killerOne)
+            {
+                if (!brotherDone)
+                {
+                    brotherKiller.RunDialogue();
+                    player.SetDialogue(brotherKiller);
+                }
+                else
+                {
+                    brotherEnd.RunDialogue();
+                    player.SetDialogue(brotherEnd);
+                }
+            }
             else
             {
                 brotherIdle.RunDialogue();
@@ -143,7 +205,7 @@ public class NPC : Interactable
         }
         if(father)
         {
-            if (argueClueFound)
+            if (argueClueFound && !bankStatementsFound && !motherLeave)
             {
                 if(!fatherTwoDone)
                 {
@@ -162,10 +224,48 @@ public class NPC : Interactable
                 fatherStarting.RunDialogue();
                 player.SetDialogue(fatherStarting);
             }
-            else if (bankStatementsFound)
+            else if (bankStatementsFound && !motherLeave)
             {
-                fatherIdle2.RunDialogue();
-                player.SetDialogue(fatherIdle2);
+                if(!fatherThreeDone)
+                {
+                    fatherBank.RunDialogue();
+                    player.SetDialogue(fatherBank);
+                }
+                else
+                {
+                    fatherIdle.RunDialogue();
+                    player.SetDialogue(fatherIdle);
+                }
+                
+            }
+            else if (motherLeave && !shoeFound)
+            {
+                if(!fatherFourDone)
+                {
+                    fatherShoe.RunDialogue();
+                    player.SetDialogue(fatherShoe);
+                }
+                else
+                {
+                    fatherIdle.RunDialogue();
+                    player.SetDialogue(fatherIdle);
+                }
+                
+            }
+
+            else if (shoeFound)
+            {
+                if (!killerOne)
+                {
+                    fatherFinal.RunDialogue();
+                    player.SetDialogue(fatherFinal);
+                }
+                else
+                {
+                    fatherDone.RunDialogue();
+                    player.SetDialogue(fatherDone);
+                }
+                
             }
 
             else
@@ -176,7 +276,17 @@ public class NPC : Interactable
         }
         if(grandfather)
         {
+            if (brotherDone)
+            {
+                grandfatherKiller.RunDialogue();
+                player.SetDialogue(grandfatherKiller);
+            }
 
+            else
+            {
+                grandfatherIdle.RunDialogue();
+                player.SetDialogue(grandfatherIdle);
+            }
         }
         if(chief)
         {
@@ -250,9 +360,19 @@ public class NPC : Interactable
         argueClueFound = true;
     }
 
+    public void SisterTwoDone()
+    {
+        sisterTwoDone = true;
+    }
+
     public void BrotherOneDone()
     {
         brotherOneDone = true;
+    }
+
+    public void BrotherDone()
+    {
+        brotherDone = true;
     }
 
     public void FatherOneDone()
@@ -265,9 +385,35 @@ public class NPC : Interactable
         fatherTwoDone = true;
     }
 
+    public void FatherThreeDone()
+    {
+        fatherThreeDone = true;
+        brotherOneDone = true;
+    }
+
+    public void FatherFourDone()
+    {
+        fatherFourDone = true;
+    }
+
     public void EvidenceTwoDone()
     {
         bankStatementsFound = true;
+    }
+
+    public void EvidenceThreeDone()
+    {
+        motherLeave = true;
+    }
+
+    public void EvidenceFourDone()
+    {
+        shoeFound = true;
+    }
+
+    public void KillerOne()
+    {
+        killerOne = true;
     }
 }
 

@@ -27,6 +27,10 @@ public class LevelLoader : MonoBehaviour
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
     }
+    public void Restart()
+    {
+        StartCoroutine(LoadLevel(0));
+    }
 
     /// <summary>
     /// Coroutine to handle the scene loading process, including playing a transition animation.
@@ -45,8 +49,18 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene(levelIndex);
 
         // Lock the cursor and hide it for the next scene.
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if(levelIndex == 0)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
     }
 
 

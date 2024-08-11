@@ -1,3 +1,10 @@
+/*
+ * Author: Kishaan S/O Ellapparaja
+ * Date: 11/08/2024
+ * Description: 
+ * This script manages animation for siren.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +20,9 @@ public class Sirens : MonoBehaviour
         StartCoroutine(Siren());
     }
 
+    /// <summary>
+    /// Coroutine to alternate the activation of red and blue lights to simulate a siren effect.
+    /// </summary>
     IEnumerator Siren()
     {
         yield return new WaitForSeconds(waitTime);
@@ -22,9 +32,9 @@ public class Sirens : MonoBehaviour
 
         yield return new WaitForSeconds(waitTime);
 
-        redLight.SetActive(true);
+        redLight.SetActive(true); // Turn on the red light
         blueLight.SetActive(false);
-        StartCoroutine(Siren());
+        StartCoroutine(Siren()); // Restart the coroutine for continuous effect
     }
 
 }

@@ -1,3 +1,10 @@
+/*
+ * Author: Kishaan S/O Ellapparaja
+ * Date: 11/08/2024
+ * Description: 
+ * This script controls the Grandfather character's movement and animation in the game
+ */
+
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -58,12 +65,19 @@ public class GrandfatherAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts the Grandfather's movement towards the walkPoint and hides the move button.
+    /// </summary>
     public void StartMoving()
     {
         shouldMove = true;
         moveButton.gameObject.SetActive(false); // Hide button after starting to move
     }
 
+    /// <summary>
+    /// Shows the move button when the player collides with the Grandfather.
+    /// </summary>
+    /// <param name="collision">The collision information.</param>
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -73,6 +87,10 @@ public class GrandfatherAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides the move button when the player exits the collision with the Grandfather.
+    /// </summary>
+    /// <param name="collision">The collision information.</param>
     void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

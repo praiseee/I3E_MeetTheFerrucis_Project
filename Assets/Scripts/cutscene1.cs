@@ -1,3 +1,11 @@
+/*
+ * Author: Isaac Leung
+ * Date: 11/08/2024
+ * Description: 
+ * This script manages the behavior of a robot during a cutscene. It controls the robot's movement
+ * towards a specified target and interacts with a PlayableDirector for cutscenes
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

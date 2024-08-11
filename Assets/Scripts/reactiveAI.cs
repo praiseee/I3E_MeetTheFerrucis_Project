@@ -1,3 +1,10 @@
+/*
+ * Author: Hoo Ying Qi Praise
+ * Date: 11/08/2024
+ * Description: 
+ * The AI using sets of waypoints, handles behaviors for sitting down, going downstairs, and interacting with doors.
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +12,17 @@ using UnityEngine.AI;
 
 public class reactiveAI : MonoBehaviour
 {
+    /// <summary>
+    /// WayPoints for patrolling
+    /// </summary>
     public Transform[] waypoints;
     public Transform[] downstairsWaypoints;
     public Transform[] sittingDownWaypoints;
-    public Door linkedDoor; // Reference to the Door script
+
+    /// <summary>
+    /// Reference to the Door script for handling door interactions
+    /// </summary>
+    public Door linkedDoor; 
     public Door linkedDoor2;
     public Door linkedDoor3;
 
@@ -24,6 +38,9 @@ public class reactiveAI : MonoBehaviour
     Vector3 target;
     NavMeshAgent agent;
 
+    /// <summary>
+    /// Updates the AI's destination to the current waypoint
+    /// </summary>
     void UpdateDestination()
     {
         if (useSittingDownWaypoints)
@@ -41,6 +58,9 @@ public class reactiveAI : MonoBehaviour
         agent.SetDestination(target);
     }
 
+    /// <summary>
+    /// Increments the waypoint index and checks if a door should be opened/closed
+    /// </summary>
     void IterateWaypointIndex()
     {
         waypointIndex++;
@@ -118,48 +138,75 @@ public class reactiveAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens and closes the first linked door
+    /// </summary>
     void OpenAndCloseDoor()
     {
         linkedDoor.OpenDoor();
         StartCoroutine(CloseDoorAfterDelay());
     }
 
+    /// <summary>
+    /// Coroutine to close the first linked door after a delay
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CloseDoorAfterDelay()
     {
         yield return new WaitForSeconds(2f);
         linkedDoor.CloseDoor();
     }
 
+    /// <summary>
+    /// Opens and closes the second linked door
+    /// </summary>
     void OpenAndCloseDoor2()
     {
         linkedDoor2.OpenDoor();
         StartCoroutine(CloseDoorAfterDelay2());
     }
 
+    /// <summary>
+    /// Coroutine to close the second linked door after a delay
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CloseDoorAfterDelay2()
     {
         yield return new WaitForSeconds(2f);
         linkedDoor2.CloseDoor();
     }
 
+    /// <summary>
+    /// Opens and closes the third linked door
+    /// </summary>
     void OpenAndCloseDoor3()
     {
         linkedDoor3.OpenDoor();
         StartCoroutine(CloseDoorAfterDelay3());
     }
 
+    /// <summary>
+    /// Coroutine to close the third linked door after a delay
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CloseDoorAfterDelay3()
     {
         yield return new WaitForSeconds(2f);
         linkedDoor3.CloseDoor();
     }
 
+    /// <summary>
+    /// Initializes the NavMeshAgent and sets the initial destination
+    /// </summary>
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         UpdateDestination();
     }
 
+    /// <summary>
+    /// Updates the AI's movement each frame
+    /// </summary>
     void Update()
     {
         if (agent.enabled && !agent.isStopped && Vector3.Distance(transform.position, target) < 1)
@@ -169,11 +216,17 @@ public class reactiveAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stops the AI from moving
+    /// </summary>
     public void StopMoving()
     {
         agent.isStopped = true;
     }
 
+    /// <summary>
+    /// Resumes AI movement
+    /// </summary>
     public void ResumeMoving()
     {
         if(!destinationReached)
@@ -187,6 +240,9 @@ public class reactiveAI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Switches to the downstairs waypoint set
+    /// </summary>
     public void Downstairs()
     {
         npcAnimator.SetTrigger("IsTrigger");
@@ -197,6 +253,9 @@ public class reactiveAI : MonoBehaviour
         ResumeMoving();
     }
 
+    /// <summary>
+    /// Switches to the sitting down waypoint set
+    /// </summary>
     public void SittingDown()
     {
         npcAnimator.SetTrigger("IsTrigger");

@@ -8,6 +8,7 @@ public class StopMovementAndAnimation : MonoBehaviour
     private NavMeshAgent agent;
     private Animator animator;
     public PlayableDirector playableDirector; // Reference to the PlayableDirector for cutscenes
+    public LevelLoader levelLoader;
 
     void Start()
     {
@@ -56,7 +57,8 @@ public class StopMovementAndAnimation : MonoBehaviour
     {
         if (director == playableDirector)
         {
-            SceneManager.LoadScene("Outside"); // Transition to the "Outside" scene
+            levelLoader.SwitchScene();
+            //SceneManager.LoadScene("Outside"); // Transition to the "Outside" scene
         }
     }
 }

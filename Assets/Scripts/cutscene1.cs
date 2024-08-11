@@ -11,6 +11,7 @@ public class cutscene1 : MonoBehaviour
     private NavMeshAgent agent;
     public float normalSpeed = 3.5f; // Set this to the normal speed of your NavMeshAgent
     public PlayableDirector playableDirector; // Reference to the PlayableDirector for cutscenes
+    public LevelLoader levelLoader;
 
     void Start()
     {
@@ -58,7 +59,8 @@ public class cutscene1 : MonoBehaviour
     {
         if (director == playableDirector)
         {
-            SceneManager.LoadScene("Outside"); // Transition to the "Outside" scene
+            levelLoader.SwitchScene();
+            //SceneManager.LoadScene("Outside"); // Transition to the "Outside" scene
         }
     }
 }

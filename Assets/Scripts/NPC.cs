@@ -1,10 +1,10 @@
-////
- /// Author: Kishaan S/O Ellapparaja
- /// Date: 11/08/2024
- /// Description: 
- /// This script handles NPC interactions, dialogue management, and the conditions required for progressing through the game. 
- /// It controls NPC movement, dialogue sequences, and camera behavior during player interactions.
- ////
+/*
+ * Author: Kishaan S/O Ellapparaja
+ * Date: 11/08/2024
+ * Description: 
+ * This script handles NPC interactions, dialogue management, and the conditions required for progressing through the game. 
+ * It controls NPC movement, dialogue sequences, and camera behavior during player interactions.
+ */
 
 using System.Collections;
 using System.Collections.Generic;
